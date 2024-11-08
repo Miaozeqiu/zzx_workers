@@ -1,5 +1,5 @@
-name = "icy-mode-58ae"
+name = "zzxworkers"
 
 main = "src/index.js"
 type = "javascript"
-compatibility_date = "2024-11-08"  # 这里设置为今天的日期，或者你可以使用当前日期
+compatibility_date = "2024-11-08"  
