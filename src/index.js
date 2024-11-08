@@ -31,14 +31,9 @@ async function handleRequest(request) {
       const { data: questions, error } = await query.range(offset, offset + limit - 1);
       if (error) throw error;
 
-      questions.forEach(q => {
-        // 检查问题的 pid 是否在 loadedPids 中
-        if (!loadedPids.has(q.pid)) {
-          finalQuestions.push(q);
-          loadedPids.add(q.pid);
-        }
-      });
-      
+      // 过滤已加载的 PIDs
+      const filteredQuestions = questions.filter(q => !loadedPids.has(q.pid));
+      filteredQuestions.forEach(q => loadedPids.add(q.pid));
 
       // 合并结果
       finalQuestions = finalQuestions.concat(filteredQuestions);
