@@ -1,0 +1,9 @@
+{
+    "name": "zzx_workers",
+    "version": "1.0.0",
+    "type": "module",
+    "main": "app.js",
+    "dependencies": {
+      "@supabase/supabase-js": "^2.0.0"
+    }
+  }

@@ -14,4 +14,3 @@ supabase: Client = create_client(url, key)
 response = supabase.table("users").select("*").execute()
 
 
-print(response.data)

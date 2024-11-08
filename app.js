@@ -1,16 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
+import http from 'http';
+
+const port = 3000;
 
 const SUPABASE_URL = 'https://urpwmepjyjntedvjgccc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVycHdtZXBqeWpudGVkdmpnY2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEwMDEwOTUsImV4cCI6MjA0NjU3NzA5NX0.qVFRSkBHtbfBUCeC8ZO25mU_mmCAIcG_QgZDT4ajWgg';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-async function handleRequest(request) {
-  const url = new URL(request.url);
-  const search_term = url.searchParams.get('search') || '';
+http.createServer(async (req, res) => {
+  const { searchParams } = new URL(req.url, `http://localhost:${port}`);
+  const search_term = searchParams.get('search') || '';
   const limit = 5;
-  let page = parseInt(url.searchParams.get('page') || '1', 10);
-  const loadedPids = new Set((url.searchParams.get('loadedPids') || '').split(',').filter(x => x));
+  let page = parseInt(searchParams.get('page') || '1', 10);
+  const loadedPids = new Set((searchParams.get('loadedPids') || '').split(',').filter(x => x));
 
   let finalQuestions = [];
 
@@ -54,17 +57,13 @@ async function handleRequest(request) {
       }))
     };
 
-    return new Response(JSON.stringify(response), {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    // 设置响应
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(response));
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Error fetching questions' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Error fetching questions' }));
   }
-}
-
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
+}).listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
 });
