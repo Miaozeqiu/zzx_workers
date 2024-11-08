@@ -1,3 +1,14 @@
-addEventListener('fetch', event => {
-  event.respondWith(new Response('Hello, world!', { status: 200 }));
-});
+import { createClient } from '@supabase/supabase-js';
+
+export default {
+  async fetch(request, env) {
+    const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
+    const { data, error } = await supabase.from("users").select('*');
+    if (error) throw error;
+    return new Response(JSON.stringify(data), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+};
