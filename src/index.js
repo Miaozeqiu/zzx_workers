@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 // 将 Supabase URL 和密钥存储在环境变量中
 const SUPABASE_URL = 'https://urpwmepjyjntedvjgccc.supabase.co';
-const SUPABASE_KEY = SUPABASE_SERVICE_KEY; // 从环境变量中获取
+const SUPABASE_KEY = SUPABASE_KEY; // 从环境变量中获取
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
