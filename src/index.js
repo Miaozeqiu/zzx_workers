@@ -8,7 +8,7 @@ export default {
     let page = parseInt(searchParams.get('page') || '1', 10);
     const loadedPids = new Set((searchParams.get('loadedPids') || '').split(',').filter(x => x));
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
 
     // 存储最终要返回的结果
     let finalQuestions = [];
