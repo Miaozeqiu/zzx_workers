@@ -1,0 +1,5 @@
+name = "your-worker-name"
+type = "javascript"
+
+[env.production]
+main = "src/index.js"
