@@ -31,19 +31,29 @@ async function handleRequest(request) {
       const { data: questions, error } = await query.range(offset, offset + limit - 1);
       if (error) throw error;
 
-      questions.forEach(q => {
-        // 检查问题的 pid 是否在 loadedPids 中
+      for (let q of questions) {
         if (!loadedPids.has(q.pid)) {
-          finalQuestions.push(q);
+          // 获取与问题相关的选项
+          const { data: options, error: optionsError } = await supabase
+            .from('options')
+            .select('*')
+            .eq('question_id', q.id); // 确保您正在使用正确的外键关联
+
+          if (optionsError) throw optionsError;
+          
+          finalQuestions.push({
+            pid: q.pid,
+            question_text: q.question_text,
+            id: q.id,
+            options: options || [] // 如果没有选项，默认为空数组
+          });
           loadedPids.add(q.pid);
         }
-      });
-      
+      }
 
-      
       // 检查是否需要退出循环
       if (questions.length === 0) break;
-      
+
       // 页数递增
       page++;
     }
@@ -51,11 +61,7 @@ async function handleRequest(request) {
     // 响应构造
     const response = {
       page,
-      questions: finalQuestions.slice(0, limit).map(q => ({
-        pid: q.pid,
-        question_text: q.question_text,
-        id: q.id
-      }))
+      questions: finalQuestions.slice(0, limit)
     };
 
     return new Response(JSON.stringify(response), {
@@ -67,7 +73,7 @@ async function handleRequest(request) {
       },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Error fetching questions' }), {
+    return new Response(JSON.stringify({ error: 'Error fetching questions and options' }), {
       status: 500,
       headers: { 
         'Content-Type': 'application/json',
