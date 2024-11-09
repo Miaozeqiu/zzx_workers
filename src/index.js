@@ -42,6 +42,11 @@ async function handleRequest(request) {
           if (optionsError) throw optionsError;
           
           finalQuestions.push({
+            chapter_name : q.chapter_name,
+            course_id : q.course_id,
+            course_name : q.course_name,
+            paper_name : q.paper_name,
+            question_type : q.question_type,      
             pid: q.pid,
             question_text: q.question_text,
             id: q.id,
