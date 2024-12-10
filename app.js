@@ -3,8 +3,8 @@ import http from 'http';
 
 const port = 3000;
 
-const SUPABASE_URL = 'https://urpwmepjyjntedvjgccc.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVycHdtZXBqeWpudGVkdmpnY2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEwMDEwOTUsImV4cCI6MjA0NjU3NzA5NX0.qVFRSkBHtbfBUCeC8ZO25mU_mmCAIcG_QgZDT4ajWgg';
+const SUPABASE_URL = '';
+const SUPABASE_KEY = '';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
